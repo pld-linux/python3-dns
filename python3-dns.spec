@@ -1,17 +1,15 @@
 
 %define		module	dns
 
-%define snapshot 20110611
-
 Summary:	dnspython3 - a DNS toolkit for Python 3
 Summary(pl.UTF-8):	dnspython3 - zestaw narzędzi do DNS dla Pythona 3
 Name:		python3-%{module}
-Version:	1.9.5
-Release:	0.%{snapshot}.1
+Version:	1.10.0
+Release:	1
 License:	MIT
 Group:		Development/Languages/Python
-Source0:	dnspython3-%{version}-%{snapshot}.tar.gz
-# Source0-md5:	74c6e72c6580a97a324f8f3cb894c83a
+Source0:	http://www.dnspython.org/kits3/1.10.0/dnspython3-%{version}.tar.gz
+# Source0-md5:	17d0ec54f83df3e95846fc4e20224a96
 URL:		http://www.dnspython.org/
 BuildRequires:	python3-devel >= 3.0
 BuildRequires:	rpm-pythonprov
@@ -63,7 +61,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc ChangeLog LICENSE README TODO
+%doc ChangeLog LICENSE README
 %{py3_sitescriptdir}/%{module}
 %{py3_sitescriptdir}/*.egg-info
 %{_examplesdir}/%{name}-%{version}
