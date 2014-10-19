@@ -5,7 +5,7 @@ Summary:	dnspython3 - a DNS toolkit for Python 3
 Summary(pl.UTF-8):	dnspython3 - zestaw narzędzi do DNS dla Pythona 3
 Name:		python3-%{module}
 Version:	1.11.1
-Release:	1
+Release:	2
 License:	MIT
 Group:		Development/Languages/Python
 Source0:	http://www.dnspython.org/kits3/%{version}/dnspython3-%{version}.tar.gz
