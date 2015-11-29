@@ -13,7 +13,7 @@ Source0:	http://www.dnspython.org/kits3/%{version}/dnspython3-%{version}.tar.gz
 URL:		http://www.dnspython.org/
 BuildRequires:	python3-devel >= 3.0
 BuildRequires:	rpm-pythonprov
-BuildRequires:	rpmbuild(macros) >= 1.523
+BuildRequires:	rpmbuild(macros) >= 1.710
 %pyrequires_eq	python-modules
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
