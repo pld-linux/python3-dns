@@ -4,17 +4,17 @@
 Summary:	dnspython3 - a DNS toolkit for Python 3
 Summary(pl.UTF-8):	dnspython3 - zestaw narzędzi do DNS dla Pythona 3
 Name:		python3-%{module}
-Version:	1.11.1
-Release:	4
+Version:	1.12.0
+Release:	1
 License:	MIT
 Group:		Development/Languages/Python
 Source0:	http://www.dnspython.org/kits3/%{version}/dnspython3-%{version}.tar.gz
-# Source0-md5:	c0203410e1405c3ee1d70dafa4ad6612
+# Source0-md5:	32178038d8a1b11e818ae4658745133c
 URL:		http://www.dnspython.org/
-BuildRequires:	python3-devel >= 3.0
+BuildRequires:	python3-devel >= 1:3.2
 BuildRequires:	rpm-pythonprov
-BuildRequires:	rpmbuild(macros) >= 1.710
-%pyrequires_eq	python-modules
+BuildRequires:	rpmbuild(macros) >= 1.714
+%pyrequires_eq	python3-modules
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -50,9 +50,9 @@ komunikatach, nazwach i rekordach w DNS-ie.
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
 
-cp -r examples/* $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
-
 %py3_install
+
+cp -rp examples/* $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -60,6 +60,6 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc ChangeLog LICENSE README
-%{py3_sitescriptdir}/%{module}
-%{py3_sitescriptdir}/*.egg-info
+%{py3_sitescriptdir}/dns
+%{py3_sitescriptdir}/dnspython3-%{version}-py*.egg-info
 %{_examplesdir}/%{name}-%{version}
