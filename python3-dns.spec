@@ -1,7 +1,7 @@
 %define		module	dns
 Summary:	dnspython - a DNS toolkit for Python 3
 Summary(pl.UTF-8):	dnspython - zestaw narzędzi do DNS dla Pythona 3
-Name:		python-%{module}
+Name:		python3-%{module}
 Version:	2.1.0
 Release:	1
 License:	MIT
