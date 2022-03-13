@@ -1,3 +1,7 @@
+#
+# Conditional build:
+%bcond_without	tests	# unit tests
+
 %define		module	dns
 Summary:	dnspython - a DNS toolkit for Python 3
 Summary(pl.UTF-8):	dnspython - zestaw narzędzi do DNS dla Pythona 3
@@ -6,12 +10,18 @@ Version:	2.2.0
 Release:	1
 License:	MIT
 Group:		Development/Languages/Python
-Source0:	https://pypi.debian.net/dnspython/dnspython-%{version}.tar.gz
+Source0:	https://files.pythonhosted.org/packages/source/d/dnspython/dnspython-%{version}.tar.gz
 # Source0-md5:	6a247a755f7676f115c0e555842550d5
-URL:		http://www.dnspython.org/
-BuildRequires:	python3-devel >= 1:3.3
-BuildRequires:	python3-setuptools
-BuildRequires:	python3-wheel
+Patch0:		%{name}-no-wheel.patch
+URL:		https://www.dnspython.org/
+BuildRequires:	python3-devel >= 1:3.6
+BuildRequires:	python3-setuptools >= 1:44
+BuildRequires:	python3-setuptools_scm >= 3.4.3
+BuildRequires:	python3-toml
+%if %{with tests}
+BuildRequires:	python3-pytest >= 5.4.1
+# < 7 according to pyproject.toml
+%endif
 BuildRequires:	rpmbuild(macros) >= 1.714
 BuildRequires:	rpm-pythonprov
 Requires:	python3-modules >= 1:3.6
@@ -42,9 +52,15 @@ komunikatach, nazwach i rekordach w DNS-ie.
 
 %prep
 %setup -q -n dnspython-%{version}
+%patch0 -p1
 
 %build
 %py3_build
+
+%if %{with tests}
+PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 \
+%{__python3} -m pytest tests
+%endif
 
 %install
 rm -rf $RPM_BUILD_ROOT

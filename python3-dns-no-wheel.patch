@@ -1,0 +1,11 @@
+--- dnspython-2.2.0/setup.cfg.orig	2022-01-18 14:24:20.406987700 +0100
++++ dnspython-2.2.0/setup.cfg	2022-03-05 08:21:35.339056016 +0100
+@@ -42,7 +42,7 @@ packages =
+     dns.rdtypes.CH
+ python_requires = >=3.6
+ test_suite = tests
+-setup_requires = setuptools>=44; wheel; setuptools_scm[toml]>=3.4.3
++setup_requires = setuptools>=44; setuptools_scm[toml]>=3.4.3
+ 
+ [options.extras_require]
+ DOH = httpx>=0.21.1; h2>=4.1.0; requests; requests-toolbelt
