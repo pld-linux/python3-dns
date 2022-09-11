@@ -6,21 +6,28 @@
 Summary:	dnspython - a DNS toolkit for Python 3
 Summary(pl.UTF-8):	dnspython - zestaw narzędzi do DNS dla Pythona 3
 Name:		python3-%{module}
-Version:	2.2.0
-Release:	3
+Version:	2.2.1
+Release:	1
 License:	MIT
 Group:		Development/Languages/Python
 Source0:	https://files.pythonhosted.org/packages/source/d/dnspython/dnspython-%{version}.tar.gz
-# Source0-md5:	6a247a755f7676f115c0e555842550d5
+# Source0-md5:	c7172f4115cd7b60fd5037cfcd8f9408
 Patch0:		%{name}-no-wheel.patch
+Patch1:		%{name}-deps.patch
 URL:		https://www.dnspython.org/
 BuildRequires:	python3-devel >= 1:3.6
 BuildRequires:	python3-setuptools >= 1:44
 BuildRequires:	python3-setuptools_scm >= 3.4.3
 BuildRequires:	python3-toml
 %if %{with tests}
+BuildRequires:	python3-cryptography >= 2.6
+BuildRequires:	python3-idna >= 2.1
 BuildRequires:	python3-pytest >= 5.4.1
-# < 7 according to pyproject.toml
+BuildRequires:	python3-pytest < 8
+# curio: curio>=1.2; sniffio>=1.1
+# DOH: httpx>=0.21.1; h2>=4.1.0; requests; requests-toolbelt
+# trio: trio>=0.14.0
+# wmi: wmi>=1.5.1
 %endif
 BuildRequires:	rpmbuild(macros) >= 1.714
 BuildRequires:	rpm-pythonprov
@@ -53,6 +60,7 @@ komunikatach, nazwach i rekordach w DNS-ie.
 %prep
 %setup -q -n dnspython-%{version}
 %patch0 -p1
+%patch1 -p1
 
 %build
 %py3_build
