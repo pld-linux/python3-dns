@@ -59,8 +59,8 @@ komunikatach, nazwach i rekordach w DNS-ie.
 
 %prep
 %setup -q -n dnspython-%{version}
-%patch0 -p1
-%patch1 -p1
+%patch -P 0 -p1
+%patch -P 1 -p1
 
 %build
 %py3_build
