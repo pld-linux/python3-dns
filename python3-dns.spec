@@ -6,32 +6,29 @@
 Summary:	dnspython - a DNS toolkit for Python 3
 Summary(pl.UTF-8):	dnspython - zestaw narzędzi do DNS dla Pythona 3
 Name:		python3-%{module}
-Version:	2.2.1
-Release:	3
+Version:	2.7.0
+Release:	1
 License:	MIT
 Group:		Development/Languages/Python
 Source0:	https://files.pythonhosted.org/packages/source/d/dnspython/dnspython-%{version}.tar.gz
-# Source0-md5:	c7172f4115cd7b60fd5037cfcd8f9408
-Patch0:		%{name}-no-wheel.patch
-Patch1:		%{name}-deps.patch
+# Source0-md5:	7a8f6f15038a116598744517931420d0
 URL:		https://www.dnspython.org/
-BuildRequires:	python3-devel >= 1:3.6
-BuildRequires:	python3-setuptools >= 1:44
-BuildRequires:	python3-setuptools_scm >= 3.4.3
-BuildRequires:	python3-toml
+BuildRequires:	python3-build
+BuildRequires:	python3-devel >= 1:3.9
+BuildRequires:	python3-hatchling >= 1.21.0
+BuildRequires:	python3-installer
 %if %{with tests}
-BuildRequires:	python3-cryptography >= 2.6
-BuildRequires:	python3-idna >= 2.1
-BuildRequires:	python3-pytest >= 5.4.1
-BuildRequires:	python3-pytest < 8
+BuildRequires:	python3-cryptography >= 43
+BuildRequires:	python3-idna >= 3.7
+BuildRequires:	python3-pytest >= 7.4
 # curio: curio>=1.2; sniffio>=1.1
 # DOH: httpx>=0.21.1; h2>=4.1.0; requests; requests-toolbelt
 # trio: trio>=0.14.0
 # wmi: wmi>=1.5.1
 %endif
-BuildRequires:	rpmbuild(macros) >= 1.714
+BuildRequires:	rpmbuild(macros) >= 2.044
 BuildRequires:	rpm-pythonprov
-Requires:	python3-modules >= 1:3.6
+Requires:	python3-modules >= 1:3.9
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -59,11 +56,9 @@ komunikatach, nazwach i rekordach w DNS-ie.
 
 %prep
 %setup -q -n dnspython-%{version}
-%patch -P 0 -p1
-%patch -P 1 -p1
 
 %build
-%py3_build
+%py3_build_pyproject
 
 %if %{with tests}
 PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 \
@@ -73,13 +68,15 @@ PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 \
 %install
 rm -rf $RPM_BUILD_ROOT
 
-%py3_install
+%py3_install_pyproject
 
 install -d $RPM_BUILD_ROOT%{_examplesdir}/python3-%{module}-%{version}
 cp -pr examples/* $RPM_BUILD_ROOT%{_examplesdir}/python3-%{module}-%{version}
 
-sed -E -i -e '1s,#!\s*/usr/bin/env\s+python(\s|$),#!%{__python3}\1,' -e '1s,#!\s*/usr/bin/env\s+python3(\s|$),#!%{__python3}\1,' \
-      $RPM_BUILD_ROOT%{_examplesdir}/python3-%{module}-%{version}/*.py
+sed -E -i -e '1s,#!\s*/usr/bin/env\s+python(\s|$),#!%{__python3}\1,' \
+	-e '1s,#!\s*/usr/bin/env\s+python3(\s|$),#!%{__python3}\1,' \
+	-e '1s,#!\s*/usr/bin/python(\s|$),#!%{__python3}\1,' \
+	$RPM_BUILD_ROOT%{_examplesdir}/python3-%{module}-%{version}/*.py
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -88,5 +85,5 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc LICENSE README.md
 %{py3_sitescriptdir}/dns
-%{py3_sitescriptdir}/dnspython-%{version}-py*.egg-info
+%{py3_sitescriptdir}/dnspython-%{version}.dist-info
 %{_examplesdir}/python3-%{module}-%{version}
