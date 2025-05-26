@@ -21,10 +21,10 @@ BuildRequires:	python3-installer
 BuildRequires:	python3-cryptography >= 43
 BuildRequires:	python3-idna >= 3.7
 BuildRequires:	python3-pytest >= 7.4
-# curio: curio>=1.2; sniffio>=1.1
-# DOH: httpx>=0.21.1; h2>=4.1.0; requests; requests-toolbelt
-# trio: trio>=0.14.0
-# wmi: wmi>=1.5.1
+# doh: httpcore >= 1.0.0, httpx >= 0.26.0, h2 >= 4.1.0
+# doq: aioquic >= 1.0.0
+# trio: trio >= 0.23
+# wmi: wmi >= 1.5.1
 %endif
 BuildRequires:	rpmbuild(macros) >= 2.044
 BuildRequires:	rpm-pythonprov
