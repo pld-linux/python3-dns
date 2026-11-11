@@ -1,0 +1,24 @@
+# time.gmtime() overflows a 32-bit time_t (i686) for RRSIG times past 2038
+--- a/dns/rdtypes/rrsigbase.py
++++ b/dns/rdtypes/rrsigbase.py
+@@ -18,7 +18,6 @@
+ import base64
+ import datetime
+ import struct
+-import time
+ from typing import TypeVar
+ 
+ import dns._text_util
+@@ -57,7 +56,11 @@
+ 
+ 
+ def posixtime_to_sigtime(what):
+-    return time.strftime("%Y%m%d%H%M%S", time.gmtime(what))
++    # time.gmtime() overflows a 32-bit time_t past 2038; signature times run to 2106
++    value = datetime.datetime(1970, 1, 1, tzinfo=datetime.UTC) + datetime.timedelta(
++        seconds=what
++    )
++    return value.strftime("%Y%m%d%H%M%S")
+ 
+ 
+ T = TypeVar("T", bound="RRSIGBase")

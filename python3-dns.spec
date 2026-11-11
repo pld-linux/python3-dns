@@ -7,12 +7,13 @@ Summary:	dnspython - a DNS toolkit for Python 3
 Summary(pl.UTF-8):	dnspython - zestaw narzędzi do DNS dla Pythona 3
 Name:		python3-%{module}
 Version:	2.9.2
-Release:	1
+Release:	2
 License:	ISC
 Group:		Development/Languages/Python
 Source0:	https://files.pythonhosted.org/packages/source/d/dnspython/dnspython-%{version}.tar.gz
 # Source0-md5:	7b46ef88a095ea615709c6bbb62c34e3
 Patch0:		dnspython-tests-feature-gates.patch
+Patch1:		dnspython-sigtime-32bit-time_t.patch
 URL:		https://www.dnspython.org/
 BuildRequires:	python3-build
 BuildRequires:	python3-devel >= 1:3.11
@@ -59,6 +60,7 @@ komunikatach, nazwach i rekordach w DNS-ie.
 %prep
 %setup -q -n dnspython-%{version}
 %patch -P0 -p1
+%patch -P1 -p1
 
 %build
 %py3_build_pyproject
