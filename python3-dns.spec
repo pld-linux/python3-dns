@@ -7,7 +7,7 @@ Summary:	dnspython - a DNS toolkit for Python 3
 Summary(pl.UTF-8):	dnspython - zestaw narzędzi do DNS dla Pythona 3
 Name:		python3-%{module}
 Version:	2.9.2
-Release:	2
+Release:	3
 License:	ISC
 Group:		Development/Languages/Python
 Source0:	https://files.pythonhosted.org/packages/source/d/dnspython/dnspython-%{version}.tar.gz
@@ -21,17 +21,37 @@ BuildRequires:	python3-installer
 BuildRequires:	python3-uv-build >= 0.9.21
 BuildRequires:	python3-uv-build < 0.14
 %if %{with tests}
+BuildRequires:	python3-aioquic >= 1.3.0
 BuildRequires:	python3-cryptography >= 50
+BuildRequires:	python3-h2 >= 4.4
+BuildRequires:	python3-httpcore2 >= 2.13
+BuildRequires:	python3-httpx2 >= 2.13
+BuildRequires:	python3-hypercorn >= 0.18.0
 BuildRequires:	python3-idna >= 3.20
 BuildRequires:	python3-pytest >= 7.4
-# doh: httpcore2 >= 2.13, httpx2 >= 2.13, h2 >= 4.4
-# doq: aioquic >= 1.3.0
-# trio: trio >= 0.34
+BuildRequires:	python3-quart-trio >= 0.12.0
+BuildRequires:	python3-sniffio
+BuildRequires:	python3-trio >= 0.34
 # wmi: wmi >= 1.5.1
 %endif
 BuildRequires:	rpmbuild(macros) >= 2.044
 BuildRequires:	rpm-pythonprov
 Requires:	python3-modules >= 1:3.11
+# upstream optional extras: rpm generates no deps for them, dnspython enables
+# each one at runtime only when installed in at least this version
+# (dns/_features.py)
+# dnssec: DNSSEC signing and validation
+Requires:	python3-cryptography >= 50
+# idna: IDNA 2008 (falls back to IDNA 2003 otherwise)
+Requires:	python3-idna >= 3.20
+# doq: DNS over QUIC and DNS over HTTP/3
+Suggests:	python3-aioquic >= 1.3.0
+# doh: DNS over HTTPS
+Suggests:	python3-h2 >= 4.4
+Suggests:	python3-httpcore2 >= 2.13
+Suggests:	python3-httpx2 >= 2.13
+# trio: trio async backend
+Suggests:	python3-trio >= 0.34
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
