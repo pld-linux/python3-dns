@@ -6,29 +6,31 @@
 Summary:	dnspython - a DNS toolkit for Python 3
 Summary(pl.UTF-8):	dnspython - zestaw narzędzi do DNS dla Pythona 3
 Name:		python3-%{module}
-Version:	2.8.0
+Version:	2.9.2
 Release:	1
-License:	MIT
+License:	ISC
 Group:		Development/Languages/Python
 Source0:	https://files.pythonhosted.org/packages/source/d/dnspython/dnspython-%{version}.tar.gz
-# Source0-md5:	5f2ceb19b1c269f9e1ccef8bf2a1e8c5
+# Source0-md5:	7b46ef88a095ea615709c6bbb62c34e3
+Patch0:		dnspython-tests-feature-gates.patch
 URL:		https://www.dnspython.org/
 BuildRequires:	python3-build
-BuildRequires:	python3-devel >= 1:3.9
-BuildRequires:	python3-hatchling >= 1.21.0
+BuildRequires:	python3-devel >= 1:3.11
 BuildRequires:	python3-installer
+BuildRequires:	python3-uv-build >= 0.9.21
+BuildRequires:	python3-uv-build < 0.14
 %if %{with tests}
-BuildRequires:	python3-cryptography >= 43
-BuildRequires:	python3-idna >= 3.7
+BuildRequires:	python3-cryptography >= 50
+BuildRequires:	python3-idna >= 3.20
 BuildRequires:	python3-pytest >= 7.4
-# doh: httpcore >= 1.0.0, httpx >= 0.26.0, h2 >= 4.1.0
-# doq: aioquic >= 1.0.0
-# trio: trio >= 0.23
+# doh: httpcore2 >= 2.13, httpx2 >= 2.13, h2 >= 4.4
+# doq: aioquic >= 1.3.0
+# trio: trio >= 0.34
 # wmi: wmi >= 1.5.1
 %endif
 BuildRequires:	rpmbuild(macros) >= 2.044
 BuildRequires:	rpm-pythonprov
-Requires:	python3-modules >= 1:3.9
+Requires:	python3-modules >= 1:3.11
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -56,6 +58,7 @@ komunikatach, nazwach i rekordach w DNS-ie.
 
 %prep
 %setup -q -n dnspython-%{version}
+%patch -P0 -p1
 
 %build
 %py3_build_pyproject

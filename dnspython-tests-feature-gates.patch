@@ -1,0 +1,68 @@
+# tests treat trio and DoH/DoQ as available when they import, while dnspython
+# itself requires newer versions (dns._features); gate on dnspython's own checks
+--- a/tests/test_async.py
++++ b/tests/test_async.py
+@@ -727,6 +727,8 @@
+     import sniffio
+     import trio
+ 
++    import dns._trio_backend  # ImportError when trio is missing or too old
++
+     class TrioAsyncDetectionTests(AsyncDetectionTests):
+         sniff_result = "trio"
+ 
+--- a/tests/test_tsig_doh_doq.py
++++ b/tests/test_tsig_doh_doq.py
+@@ -18,6 +18,7 @@
+ import dns.exception
+ import dns.message
+ import dns.query
++import dns.quic
+ import dns.tsigkeyring
+ 
+ from .util import here
+@@ -34,6 +35,10 @@
+     class Server:  # type: ignore
+         pass
+ 
++# the test server may support a transport that the dnspython client lacks
++have_doh = have_doh and dns.query._have_httpx2
++have_doq = have_doq and dns.quic.have_quic
++
+ 
+ keyring = dns.tsigkeyring.from_text({"name": "tDz6cfXXGtNivRpQ98hr6A=="})
+ ca = here("tls/ca.crt")
+--- a/tests/test_xfr.py
++++ b/tests/test_xfr.py
+@@ -760,6 +760,7 @@
+ #
+ 
+ try:
++    import dns._trio_backend  # ImportError when trio is missing or too old
+     import trio
+ 
+     @pytest.mark.skipif(not _nanonameserver_available, reason="requires nanonameserver")
+@@ -959,6 +960,7 @@
+ 
+ 
+ try:
++    import dns._trio_backend  # ImportError when trio is missing or too old
+     import trio
+ 
+     @pytest.mark.skipif(not _nanonameserver_available, reason="requires nanonameserver")
+@@ -1058,6 +1060,7 @@
+ 
+ 
+ try:
++    import dns._trio_backend  # ImportError when trio is missing or too old
+     import trio
+ 
+     @pytest.mark.skipif(not _nanonameserver_available, reason="requires nanonameserver")
+@@ -1143,6 +1146,7 @@
+ 
+ 
+ try:
++    import dns._trio_backend  # ImportError when trio is missing or too old
+     import trio
+ 
+     @pytest.mark.skipif(not _nanonameserver_available, reason="requires nanonameserver")
